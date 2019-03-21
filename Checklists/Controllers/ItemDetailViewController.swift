@@ -25,8 +25,6 @@ class ItemDetailViewController: UITableViewController {
         }
     }
     
-
-    
     @IBAction func cancel(_ sender: Any) {
         delegate?.itemDetailViewControllerDidCancel(self)
     }

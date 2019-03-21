@@ -11,57 +11,50 @@ import UIKit
 
 class AllListViewController: UITableViewController {
     
-    var listOfList = [CheckList]()
-    
-    var listOfItems1 : [ChecklistItem] = []
-    var listOfItems2 : [ChecklistItem] = []
-    var listOfItems3 : [ChecklistItem] = []
-    
+    var dataModel = DataModel.shared
+  
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        listOfItems1.append(ChecklistItem(text : "aze", checked : true))
-        listOfItems1.append(ChecklistItem(text : "azer"))
-        listOfItems1.append(ChecklistItem(text : "azert"))
-        listOfItems2.append(ChecklistItem(text : "poi", checked : true))
-        listOfItems2.append(ChecklistItem(text : "poiu"))
-        listOfItems2.append(ChecklistItem(text : "poiuy"))
-        listOfItems3.append(ChecklistItem(text : "qwe", checked : true))
-        listOfItems3.append(ChecklistItem(text : "qwer"))
-        listOfItems3.append(ChecklistItem(text : "qwert"))
-        
-        let checklist1 = CheckList(listName: "Liste 1", itemList : listOfItems1)
-        let checkList2 = CheckList(listName: "Liste 2", itemList : listOfItems2)
-        let checkList3 = CheckList(listName: "Liste 3", itemList : listOfItems3)
-        
-        listOfList.append(checklist1)
-        listOfList.append(checkList2)
-        listOfList.append(checkList3)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "viewCheckList") {
             let destVC = segue.destination as! ChecklistViewController
-            
             let indexPath = tableView.indexPath(for :sender as! UITableViewCell)!
-            destVC.checkList = listOfList[indexPath.row]
-            destVC.title = listOfList[indexPath.row].name
+            destVC.checkList = dataModel.listOfList[indexPath.row]
+            destVC.title = dataModel.listOfList[indexPath.row].name
+        } else if (segue.identifier == "addCategory") {
+            let navVC = segue.destination as! UINavigationController
+            let destVC = navVC.topViewController as! CategoryDetailViewController
+            destVC.title = "Add Item"
+            destVC.delegate = self
+        } else if (segue.identifier == "editCategory") {
+            let navVC = segue.destination as! UINavigationController
+            let destVC = navVC.topViewController as! CategoryDetailViewController
+            destVC.title = "Edit Item"
+            destVC.delegate = self
+            var indexOfSelectedCategory = tableView.indexPath(for: sender as! UITableViewCell)
+            destVC.itemToEdit = dataModel.listOfList[indexOfSelectedCategory!.row]
         }
+    }
+    
+    override func awakeFromNib() {
+        dataModel.loadChecklist()
     }
     
     //MARK: - table view Data Source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listOfList.count
+        return dataModel.listOfList.count
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        self.listOfList.remove(at: indexPath.row)
+        self.dataModel.listOfList.remove(at: indexPath.row)
         self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.none)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Checklist", for: indexPath)
-        let item = listOfList[indexPath.row]
+        let item = dataModel.listOfList[indexPath.row]
         configureText(for: cell, withItem: item)
         return cell
     }
@@ -70,7 +63,7 @@ class AllListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let item = listOfList[indexPath.row]
+        //let item = listOfList[indexPath.row]
         
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.none)
     }
@@ -80,3 +73,22 @@ class AllListViewController: UITableViewController {
     }
     
 }
+
+extension AllListViewController : CategoryDetailViewControllerDelegate {
+    func categoryDetailViewControllerDidCancel(_ controller: CategoryDetailViewController) {
+        controller.dismiss(animated:true)
+    }
+    
+    func categoryDetailViewController(_ controller: CategoryDetailViewController, didFinishAddingCategory item: CheckList) {
+        controller.dismiss(animated:true)
+        dataModel.listOfList.append(item)
+        tableView?.insertRows(at:[NSIndexPath(row: dataModel.listOfList.count-1, section: 0) as IndexPath], with: .automatic)
+    }
+    
+    func categoryDetailViewController(_ controller: CategoryDetailViewController, didFinishEditingCategory item: CheckList) {
+        controller.dismiss(animated:true)
+        let indexOfEditedItem = dataModel.listOfList.index(where:{ $0 === item })
+        tableView?.reloadRows(at:[NSIndexPath(row:indexOfEditedItem!, section: 0) as IndexPath], with: .automatic)
+    }
+}
+

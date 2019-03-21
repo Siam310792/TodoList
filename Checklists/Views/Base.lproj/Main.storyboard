@@ -162,6 +162,7 @@ Unicode: U+2713, UTF-8: E2 9C 93</string>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="tlR-Wp-chJ" kind="show" identifier="viewCheckList" id="3eL-KK-D9m"/>
+                                    <segue destination="cXD-hR-MOB" kind="presentation" identifier="editCategory" trigger="accessoryAction" id="2I6-Ws-inj"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -170,11 +171,101 @@ Unicode: U+2713, UTF-8: E2 9C 93</string>
                             <outlet property="delegate" destination="Iar-UZ-Nqc" id="mhe-6l-coe"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="MJp-I1-Xuk"/>
+                    <navigationItem key="navigationItem" id="MJp-I1-Xuk">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="s2A-s9-ura">
+                            <connections>
+                                <segue destination="cXD-hR-MOB" kind="presentation" identifier="addCategory" id="5mW-bu-YMl"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J7V-Sy-3BO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="452" y="116"/>
+        </scene>
+        <!--Add category-->
+        <scene sceneID="LEq-Lv-x7X">
+            <objects>
+                <tableViewController id="EDx-Bo-1sI" customClass="CategoryDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="dLv-uo-d75">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <sections>
+                            <tableViewSection id="4g4-GF-PlV">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ek1-Mi-dYz">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ek1-Mi-dYz" id="9Vs-rc-ic4">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="name of category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ken-zM-aQH">
+                                                    <rect key="frame" x="16" y="11" width="343" height="22"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="EDx-Bo-1sI" id="XYH-pz-Zmv"/>
+                                                    </connections>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ken-zM-aQH" firstAttribute="leading" secondItem="9Vs-rc-ic4" secondAttribute="leading" constant="16" id="DqP-8i-DQi"/>
+                                                <constraint firstItem="Ken-zM-aQH" firstAttribute="centerX" secondItem="9Vs-rc-ic4" secondAttribute="centerX" id="ESp-k0-xbG"/>
+                                                <constraint firstItem="Ken-zM-aQH" firstAttribute="trailing" secondItem="9Vs-rc-ic4" secondAttribute="trailingMargin" id="M4Q-v4-zPv"/>
+                                                <constraint firstItem="Ken-zM-aQH" firstAttribute="leading" secondItem="9Vs-rc-ic4" secondAttribute="leadingMargin" id="NvJ-GG-erF"/>
+                                                <constraint firstItem="Ken-zM-aQH" firstAttribute="top" secondItem="9Vs-rc-ic4" secondAttribute="topMargin" id="siG-3C-DyX"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Ken-zM-aQH" secondAttribute="bottom" id="uF1-YC-ZAp"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="EDx-Bo-1sI" id="Nau-49-o14"/>
+                            <outlet property="delegate" destination="EDx-Bo-1sI" id="0td-LR-j9V"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add category" id="oOr-lK-RbE">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="WpU-nW-EO4">
+                            <connections>
+                                <action selector="Cancel:" destination="EDx-Bo-1sI" id="qUz-xt-0md"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="8nL-Vh-x4l">
+                            <connections>
+                                <action selector="Done:" destination="EDx-Bo-1sI" id="pOP-p9-X3D"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="DoneButton" destination="8nL-Vh-x4l" id="J7J-2A-drT"/>
+                        <outlet property="categoryTextField" destination="Ken-zM-aQH" id="jNp-E8-Lbg"/>
+                        <outlet property="doneButton" destination="8nL-Vh-x4l" id="vcc-FU-NXH"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w6n-Cs-iBt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="452" y="1655.6221889055473"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Kp4-sF-3IO">
+            <objects>
+                <navigationController id="cXD-hR-MOB" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="0kX-qK-z90">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="EDx-Bo-1sI" kind="relationship" relationship="rootViewController" id="RNS-Vu-8Hn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X7K-9c-ybO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="452" y="845"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kg1-K1-JJI">
@@ -215,5 +306,6 @@ Unicode: U+2713, UTF-8: E2 9C 93</string>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="mD6-zn-ZEI"/>
+        <segue reference="2I6-Ws-inj"/>
     </inferredMetricsTieBreakers>
 </document>
