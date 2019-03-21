@@ -30,6 +30,10 @@ class DataModel {
             object: nil)
     }
     
+    func sortChecklists() {
+        listOfList.sort { $0.name < $1.name }
+    }
+    
     //MARK: - Save data
     @objc func saveCheckList() {
         let encoder = JSONEncoder()

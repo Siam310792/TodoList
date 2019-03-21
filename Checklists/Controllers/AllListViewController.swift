@@ -12,10 +12,20 @@ import UIKit
 class AllListViewController: UITableViewController {
     
     var dataModel = DataModel.shared
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        dataModel.sortChecklists()
+        tableView.reloadData()
+    }
+    
+    override func awakeFromNib() {
+        dataModel.loadChecklist()
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "viewCheckList") {
@@ -36,10 +46,6 @@ class AllListViewController: UITableViewController {
             var indexOfSelectedCategory = tableView.indexPath(for: sender as! UITableViewCell)
             destVC.itemToEdit = dataModel.listOfList[indexOfSelectedCategory!.row]
         }
-    }
-    
-    override func awakeFromNib() {
-        dataModel.loadChecklist()
     }
     
     //MARK: - table view Data Source
@@ -70,6 +76,13 @@ class AllListViewController: UITableViewController {
     
     func configureText(for cell: UITableViewCell, withItem item: CheckList) {
         cell.textLabel?.text = item.name
+        if (item.itemList.count == 0) {
+            cell.detailTextLabel?.text = "(No item)"
+        } else if (item.uncheckedItemsCount == 0) {
+            cell.detailTextLabel?.text = "All done !"
+        } else {
+            cell.detailTextLabel?.text = String(item.uncheckedItemsCount) + " remaining"
+        }
     }
     
 }

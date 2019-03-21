@@ -11,6 +11,15 @@ import Foundation
 class CheckList : Codable {
     var itemList : [ChecklistItem]
     var name : String
+    var uncheckedItemsCount : Int {
+        var nbItemCheck = 0
+        for item in itemList {
+            if (!item.checked) {
+                nbItemCheck += 1
+            }
+        }
+        return nbItemCheck
+    }
     
     init(listName : String, itemList : [ChecklistItem]) {
         self.itemList = itemList
@@ -21,4 +30,6 @@ class CheckList : Codable {
         self.name = listName
         self.itemList = []
     }
+    
+    
 }
