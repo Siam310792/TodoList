@@ -85,6 +85,10 @@ class AllListViewController: UITableViewController {
         }
     }
     
+    func configureImage(for cell: UITableViewCell, withItem item: CheckList) {
+        cell.imageView?.image = item.icon.image
+    }
+    
 }
 
 extension AllListViewController : CategoryDetailViewControllerDelegate {

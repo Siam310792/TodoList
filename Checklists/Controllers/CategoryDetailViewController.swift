@@ -13,6 +13,7 @@ class CategoryDetailViewController: UITableViewController {
     var delegate : CategoryDetailViewControllerDelegate?
     var itemToEdit : CheckList?
     
+    @IBOutlet weak var icon: NSLayoutConstraint!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var categoryTextField: UITextField!
     
